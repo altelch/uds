@@ -11,6 +11,18 @@
 #define UDS_TIMEOUT 500
 #define UDS_KEEPALIVE 3000
 
+/* OBD-II Modes */
+#define OBD_MODE_SHOW_CURRENT_DATA        0x01
+#define OBD_MODE_SHOW_FREEZE_FRAME        0x02
+#define OBD_MODE_READ_DTC                 0x03
+#define OBD_MODE_CLEAR_DTC                0x04
+#define OBD_MODE_TEST_RESULTS_NON_CAN     0x05
+#define OBD_MODE_TEST_RESULTS_CAN         0x06
+#define OBD_MODE_READ_PENDING_DTC         0x07
+#define OBD_MODE_CONTROL_OPERATIONS       0x08
+#define OBD_MODE_VEHICLE_INFORMATION      0x09
+#define OBD_MODE_READ_PERM_DTC            0x0A
+
 /* UDS SIDs */
 #define UDS_SID_DIAGNOSTIC_CONTROL        0x10
 #define UDS_SID_ECU_RESET                 0x11
