@@ -10,10 +10,12 @@ https://github.com/altelch/iso-tp.git
 
 Currently implemented:
 
-* Nothing
+* Send UDS SID with Userpayload
+* Handle UDS Timeout
+* Handle UDS Error
 
 Missing:
 
-* Close to everything
+* The Future will show
 
 See usage example in example/uds/uds.ino

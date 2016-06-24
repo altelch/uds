@@ -23,15 +23,24 @@ void loop()
 {
   uint8_t ds[]={0x81};
   struct Session_t diag;
+  uint8_t retval=0;
 
   Serial.println(F("Diag Session"));
   diag.tx_id=0x712;
   diag.rx_id=0x732;
+  diag.sid=UDS_SID_DIAGNOSTIC_CONTROL;
   diag.Data=ds;
   diag.len=1;
-  if(uds.Diagnostic_Session_Control(&diag))
-    Serial.println(F("UDS Session Error!"));
+  if(retval=uds.Session(&diag))
+  {
+    Serial.print(F("UDS Session Error "));
+    Serial.print(retval); Serial.print(F(" NRC "));
+    Serial.println(diag.nrc);
+  }
   else
+  {
+    Serial.println(F("Established with "));
     uds.print_buffer(diag.Data,diag.len);
+  }
   delay(1000);
 }

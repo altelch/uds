@@ -38,12 +38,28 @@
 #define UDS_SID_RESPONSE_ON_EVENT         0x86
 #define UDS_SID_LINK_CONTROL              0x87
 
+/* UDS Error Codes */
+#define UDS_ERROR_ID                         0x7F
+#define UDS_NRC_SUCCESS                      0x00
+#define UDS_NRC_SERVICE_NOT_SUPPORTED        0x11
+#define UDS_NRC_SUB_FUNCTION_NOT_SUPPORTED   0x12
+#define UDS_NRC_INCORRECT_LENGTH_OR_FORMAT   0x13
+#define UDS_NRC_CONDITIONS_NOT_CORRECT       0x22
+#define UDS_NRC_REQUEST_OUT_OF_RANGE         0x31
+#define UDS_NRC_SECURITY_ACCESS_DENIED       0x33
+#define UDS_NRC_INVALID_KEY                  0x35
+#define UDS_NRC_TOO_MANY_ATTEMPS             0x36
+#define UDS_NRC_TIME_DELAY_NOT_EXPIRED       0x37
+#define UDS_NRC_RESPONSE_PENDING             0x78
+
 struct Session_t
 {
   uint32_t tx_id=0;
   uint32_t rx_id=0;
-  uint8_t *Data;
-  uint8_t len=0;
+  uint8_t  sid=0;
+  uint8_t  *Data;
+  uint8_t  len=0;
+  uint8_t  nrc=0;
 };
 
 class UDS
@@ -51,32 +67,7 @@ class UDS
 	public:
 		UDS(IsoTp* isotp);
 		void    print_buffer(uint8_t *buffer, uint16_t len);
-		uint8_t Diagnostic_Session_Control(Session_t* msg);
-		uint8_t ECU_Reset(Session_t* msg);
-		uint8_t Security_Access(Session_t* msg);
-		uint8_t Communication_Control(Session_t* msg);
-		uint8_t Tester_Present(Session_t* msg);
-		uint8_t Access_Timing_Parameter(Session_t* msg);
-		uint8_t Secured_Data_Transmission(Session_t* msg);
-		uint8_t Control_DTC_Settings(Session_t* msg);
-		uint8_t Response_On_Event(Session_t* msg);
-		uint8_t Link_Controll(Session_t* msg);
-		uint8_t Read_Data_By_Identifier(Session_t* msg);
-		uint8_t Read_Memory_By_Address(Session_t* msg);
-		uint8_t Read_Scaling_Data_By_Identifier(Session_t* msg);
-		uint8_t Read_Data_By_Periodic_Identifier(Session_t* msg);
-		uint8_t Dynamically_Define_Data_Identifier(Session_t* msg);
-		uint8_t Write_Data_By_Identifier(Session_t* msg);
-		uint8_t Write_Memory_By_Address(Session_t* msg);
-		uint8_t Clear_Diagnostic_Information(Session_t* msg);
-		uint8_t Read_DTC_Information(Session_t* msg);
-		uint8_t Input_Output_Control_By_Identifier(Session_t* msg);
-		uint8_t Routine_Control(Session_t* msg);
-		uint8_t Request_Download(Session_t* msg);
-		uint8_t Request_Upload(Session_t* msg);
-		uint8_t Transfer_Data(Session_t* msg);
-		uint8_t Request_Transfer_Exit(Session_t* msg);
-		uint8_t Request_File_Transfer(Session_t* msg);
+		uint8_t Session(Session_t* msg);
 	private:
 		IsoTp* _isotp;
 };
