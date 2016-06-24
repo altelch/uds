@@ -6,7 +6,7 @@
 
 //#define UDS_DEBUG
 
-#define MAX_DATA 128
+#define MAX_DATA (MAX_MSGBUF-1)
 #define UDS_RETRY 3
 #define UDS_TIMEOUT 500
 #define UDS_KEEPALIVE 3000
@@ -82,5 +82,6 @@ class UDS
 		uint8_t Session(Session_t* msg);
 	private:
 		IsoTp* _isotp;
+		uint8_t tmpbuf[MAX_DATA];
 };
 #endif

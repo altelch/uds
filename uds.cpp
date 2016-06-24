@@ -26,18 +26,17 @@ UDS::UDS(IsoTp* isotp)
 uint8_t UDS::Session(Session_t* session)
 {
   struct Message_t msg;
-  uint8_t tmp[MAX_DATA];
   uint32_t timeout=millis();
   uint8_t retry=UDS_RETRY;
   uint8_t retval=0;
 
-  memset(tmp,0,MAX_DATA);
-  tmp[0]=session->sid;
-  memcpy(tmp+1,session->Data,session->len);
+  memset(tmpbuf,0,MAX_DATA);
+  tmpbuf[0]=session->sid;
+  memcpy(tmpbuf+1,session->Data,session->len);
   msg.rx_id=session->rx_id;
   msg.tx_id=session->tx_id;
   msg.len=session->len+1;
-  msg.Buffer=tmp;
+  msg.Buffer=tmpbuf;
   while(retval=(_isotp->send(&msg) && retry)) retry--;
   if(!retval) _isotp->receive(&msg);
   if(millis()-timeout >= UDS_TIMEOUT) retval=1;
@@ -45,6 +44,11 @@ uint8_t UDS::Session(Session_t* session)
   {
     retval=UDS_ERROR_ID;
     session->nrc=msg.Buffer[3];// Neg. Resp. Code
+  }
+  else
+  {
+    session->Data=tmpbuf;                     // Return received message
+    session->len=msg.len;                     // Return length of message
   }
 
   return retval;
