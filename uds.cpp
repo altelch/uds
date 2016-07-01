@@ -47,8 +47,8 @@ uint8_t UDS::Session(Session_t* session)
   }
   else
   {
-    session->Data=tmpbuf+2;     // Return received message - SID and PID
-    session->len=msg.len-2;     // Return length of message - SID and PID
+    session->Data=tmpbuf+1+session->len; // Return received msg. - SID and PID
+    session->len=msg.len-1+session->len; // Return length of msg. - SID and PID
   }
 
   return retval;
