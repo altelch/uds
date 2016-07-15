@@ -71,7 +71,6 @@ struct Session_t
   uint8_t  sid=0;
   uint8_t  *Data;
   uint8_t  len=0;
-  uint8_t  nrc=0;
 };
 
 class UDS
@@ -79,7 +78,7 @@ class UDS
 	public:
 		UDS(IsoTp* isotp);
 		void    print_buffer(uint8_t *buffer, uint16_t len);
-		uint8_t Session(Session_t* msg);
+		uint16_t Session(Session_t* msg);
 	private:
 		IsoTp* _isotp;
 		uint8_t tmpbuf[MAX_DATA];

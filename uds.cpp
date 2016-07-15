@@ -23,12 +23,12 @@ UDS::UDS(IsoTp* isotp)
   _isotp = isotp;
 }
 
-uint8_t UDS::Session(Session_t* session)
+uint16_t UDS::Session(Session_t* session)
 {
   struct Message_t msg;
   uint32_t timeout=millis();
   uint8_t retry=UDS_RETRY;
-  uint8_t retval=0;
+  uint16_t retval=0;
 
   memset(tmpbuf,0,MAX_DATA);
   tmpbuf[0]=session->sid;
@@ -42,10 +42,9 @@ uint8_t UDS::Session(Session_t* session)
   if(millis()-timeout >= UDS_TIMEOUT) retval=1;
   if(msg.Buffer[1]==UDS_ERROR_ID)
   {
-    retval=UDS_ERROR_ID;
+    retval=(uint16_t) UDS_ERROR_ID<<8 | msg.Buffer[3];
 		session->Data=tmpbuf+1;
 		session->len=msg.len-1;
-    session->nrc=msg.Buffer[3]; // Neg. Resp. Code
   }
   else
   {
