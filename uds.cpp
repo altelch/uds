@@ -40,9 +40,9 @@ uint16_t UDS::Session(Session_t* session)
   while(retval=(_isotp->send(&msg) && retry)) retry--;
   if(!retval) _isotp->receive(&msg);
   if(millis()-timeout >= UDS_TIMEOUT) retval=1;
-  if(msg.Buffer[1]==UDS_ERROR_ID)
+  if(msg.Buffer[0]==UDS_ERROR_ID)
   {
-    retval=(uint16_t) UDS_ERROR_ID<<8 | msg.Buffer[3];
+    retval=(uint16_t) UDS_ERROR_ID<<8 | msg.Buffer[1];
 		session->Data=tmpbuf+1;
 		session->len=msg.len-1;
   }
