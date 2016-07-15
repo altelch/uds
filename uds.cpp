@@ -43,6 +43,8 @@ uint8_t UDS::Session(Session_t* session)
   if(msg.Buffer[1]==UDS_ERROR_ID)
   {
     retval=UDS_ERROR_ID;
+		session->Data=tmpbuf+1;
+		session->len=msg.len-1;
     session->nrc=msg.Buffer[3]; // Neg. Resp. Code
   }
   else
