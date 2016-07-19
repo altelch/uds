@@ -39,7 +39,7 @@ uint16_t UDS::Session(Session_t* session)
   msg.Buffer=tmpbuf;
   while(retval=(_isotp->send(&msg) && retry)) retry--; // retry on error
   if(!retval) isotp->receive(&msg);                    // if no error receive
-  if(millis()-timeout >= UDS_TIMEOUT) retval=1;
+  if(millis()-timeout >= UDS_TIMEOUT) retval=0xDEAD;
   else
   {
     if(msg.Buffer[0]==UDS_ERROR_ID)
