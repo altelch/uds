@@ -4,8 +4,10 @@
 #include <iso-tp.h>
 #include <uds.h>
 
+#define MCP_INT 2
+
 MCP_CAN CAN0(10);
-IsoTp isotp(&CAN0);
+IsoTp isotp(&CAN0,MCP_INT);
 UDS uds(&isotp);
 
 struct Session_t session;
@@ -13,7 +15,7 @@ struct Session_t session;
 void setup()
 {
   Serial.begin(1000000);
-  pinMode(2, INPUT);
+  pinMode(MCP_INT, INPUT);
   CAN0.begin(MCP_ANY, CAN_500KBPS, MCP_8MHZ);
   CAN0.setMode(MCP_NORMAL);
   delay(5000);
@@ -23,7 +25,7 @@ void loop()
 {
   uint8_t pid=0x00;
   struct Session_t diag;
-  uint8_t retval=0;
+  uint16_t retval=0;
 
   Serial.println(F("OBD2 request PIDs: "));
   diag.tx_id=0x7E0;
@@ -35,7 +37,7 @@ void loop()
   {
     Serial.print(F("OBD2 Error "));
     Serial.print(retval); Serial.print(F(" NRC "));
-    Serial.println(diag.nrc);
+    Serial.println(retval,HEX);
   }
   else
   {
