@@ -37,20 +37,22 @@ uint16_t UDS::Session(Session_t* session)
   msg.tx_id=session->tx_id;
   msg.len=session->len+1;
   msg.Buffer=tmpbuf;
-  while(retval=(_isotp->send(&msg) && retry)) retry--;
-  if(!retval) _isotp->receive(&msg);
-  if(millis()-timeout >= UDS_TIMEOUT) retval=1;
-  if(msg.Buffer[0]==UDS_ERROR_ID)
-  {
-    retval=(uint16_t) UDS_ERROR_ID<<8 | msg.Buffer[1];
-		session->Data=tmpbuf+1;
-		session->len=msg.len-1;
-  }
+  while(retval=(_isotp->send(&msg) && retry)) retry--; // retry on error
+  if(!retval) _isotp->receive(&msg);                   // if no error receive
+  if(millis()-timeout >= UDS_TIMEOUT) retval=0xDEAD;
   else
   {
-    session->Data=tmpbuf+1+session->len; // Return receive msg. - SID and PID
-    session->len=msg.len-1-session->len; // Return length of msg. - SID and PID
+    if(msg.Buffer[0]==UDS_ERROR_ID)
+    {
+      retval=(uint16_t) UDS_ERROR_ID<<8 | msg.Buffer[1];
+      session->Data=tmpbuf+1;
+      session->len=msg.len-1;
+    }
+    else
+    {
+      session->Data=tmpbuf+1+session->len;// Return receive msg. - SID and PID
+      session->len=msg.len-1-session->len;// Return length of msg. - SID and PID
+    }
   }
-
   return retval;
 }
