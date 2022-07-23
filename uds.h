@@ -8,7 +8,7 @@
 
 #define MAX_DATA (MAX_MSGBUF-1)
 #define UDS_RETRY 3
-#define UDS_TIMEOUT 500
+#define UDS_TIMEOUT 5000	//500 -> 5000
 #define UDS_KEEPALIVE 3000
 
 /* OBD-II Modes */
@@ -71,6 +71,7 @@ struct Session_t
   uint8_t  sid=0;
   uint8_t  *Data;
   uint8_t  len=0;
+  uint8_t  lenSub=0;	//Length of Sub-function and PID(DID or RID)
 };
 
 class UDS

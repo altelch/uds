@@ -51,16 +51,19 @@ uint16_t UDS::Session(Session_t* session)
 			if(msg.Buffer[0]==UDS_ERROR_ID)
 			{
 				if(msg.Buffer[2]==UDS_NRC_RESPONSE_PENDING) {
+					/* Pending Response */
 					msg.Buffer=tmpbuf; // Rewind buffer
 					isPendingResponse=true;
 				} else {
+					/* Negative Response */
 					retval=(uint16_t) UDS_ERROR_ID<<8 | msg.Buffer[1];
 					session->Data=tmpbuf+1;
 					session->len=msg.len-1;					
 				}
 			} else {
-			  session->Data=tmpbuf+1+session->len;// Return receive msg. - SID and PID
-			  session->len=msg.len-1-session->len;// Return length of msg. - SID and PID
+				/* Positive Response */
+			  session->Data=tmpbuf+1+session->lenSub;// Return receive msg. - SID(1 byte), Sub-function and PID
+			  session->len=msg.len-1-session->lenSub;// Return length of msg. - SID(1 byte), Sub-function and PID
 			}
 		  }
 	  } else {
