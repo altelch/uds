@@ -73,3 +73,20 @@ uint16_t UDS::Session(Session_t* session)
   }while(isPendingResponse)
   return retval;
 }
+
+#include <iostream>
+#include <sstream>
+#include <iomanip>
+
+void sprintMessage(uint32_t id, uint8_t len, uint8_t *data)
+{
+	std::ostringstream oss;
+	oss << std::hex << id << "->";
+	for(int i=0; i<len; i++) {
+		oss << " " << std::setfill('0') << std::setw(2) << (uint16_t)data[i];
+	}
+	oss << std::endl;
+	
+	std::cout << oss.str();
+}	
+	
